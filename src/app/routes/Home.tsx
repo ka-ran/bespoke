@@ -1,8 +1,10 @@
 import React from "react";
+import { FilterMembers } from "../components/filter-members/FilterMembers";
 import { MembersList } from "../components/members-list/MembersList";
 import { SearchInput } from "../components/search-input/SearchInput";
 import { fetchMembers } from "../repo/members/DummyMembersApi";
 import Member from "../repo/members/Member";
+import { Row } from "../utils/components/row/Row";
 import { getRating } from "../utils/helper-functions/RatingAlgorithm";
 
 interface Props {}
@@ -85,11 +87,14 @@ const Home = (_: Props) => {
 
   return (
     <div>
-      <SearchInput
-        searchTerm={state.searchInput}
-        onChange={(value) => dispatch({ type: "SetSearchInput", value })}
-      />
-      {/* <Filters></Filters> */}
+      <Row>
+        <SearchInput
+          searchTerm={state.searchInput}
+          onChange={(value) => dispatch({ type: "SetSearchInput", value })}
+        />
+        <FilterMembers />
+        <div>Count: {state.members.data?.length}</div>
+      </Row>
       <MembersList
         members={getSearchedMembers(state.searchInput, state.members)}
         onMemberRemove={(memberId) =>
