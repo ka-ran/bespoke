@@ -1,12 +1,23 @@
 import React from "react";
-import { Dropdown } from "../../utils/components/dropdown/Dropdown";
 
-interface FilterMembersProps {}
+interface FilterMembersProps {
+  onFilterSelect(arg0: string): void;
+}
 
-export const FilterMembers: React.FC<FilterMembersProps> = ({}) => {
+export const FilterMembers: React.FC<FilterMembersProps> = ({
+  onFilterSelect,
+}) => {
   return (
     <div>
-      Filter Members by activity: <Dropdown></Dropdown>
+      <select
+        name="Activity"
+        onChange={(event) => onFilterSelect(event.target.value)}
+      >
+        <option value="none">None</option>
+        <option value="Hiking">Hiking</option>
+        <option value="Running">Running</option>
+        <option value="Biking">Biking</option>
+      </select>
     </div>
   );
 };

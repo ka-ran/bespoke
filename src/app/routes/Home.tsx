@@ -30,7 +30,8 @@ let initialState: State = {
 type Action =
   | { type: "SetMembers"; data: Member[] }
   | { type: "SetSearchInput"; value: string }
-  | { type: "RemoveMember"; memberId: string };
+  | { type: "RemoveMember"; memberId: string }
+  | { type: "SelectFilter"; filterType: string };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -59,6 +60,19 @@ const reducer = (state: State, action: Action): State => {
             ...member,
             raiting: getRating(),
           })),
+        },
+      };
+    case "SelectFilter":
+      return {
+        ...state,
+        members: {
+          ...state.members,
+          data:
+            action.filterType !== "none"
+              ? state.members.data?.filter((member) =>
+                  member.activities.includes(action.filterType)
+                )
+              : state.members.data,
         },
       };
   }
@@ -92,7 +106,7 @@ const Home = (_: Props) => {
           searchTerm={state.searchInput}
           onChange={(value) => dispatch({ type: "SetSearchInput", value })}
         />
-        <FilterMembers />
+        <FilterMembers onFilterSelect={(_activity) => null} />
         <div>Count: {state.members.data?.length}</div>
       </Row>
       <MembersList
